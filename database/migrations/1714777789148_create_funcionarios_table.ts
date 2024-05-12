@@ -9,9 +9,9 @@ export default class extends BaseSchema {
       table.string('nome', 45).notNullable().unique()
       table.string('cpf', 14).notNullable().unique()
       table.string('endereco', 200).notNullable()
-      table.string('sexo', 1).notNullable().unique()
+      table.string('sexo', 1).notNullable()
       table.string('telefone', 15).notNullable()
-      table.integer('tipo_id').unsigned().references('id').inTable('tipos')
+      table.integer('cargo_id').unsigned().references('id').inTable('cargos')
       
 
       table.timestamp('created_at')
