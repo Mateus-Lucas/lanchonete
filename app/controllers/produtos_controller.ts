@@ -7,14 +7,18 @@ export default class ProdutosController {
 
     // Paginação de Produtos
     async index({ request }: HttpContext) {
-        const page = request.input('page', 1)
+        const page = request.input('page', 3)
         const perPage = request.input('perPage', 10)
         return await Produto.query().paginate(page, perPage)
     }
 
     // Requisição por id passado por rota(parãmetros)
     async show({ params }: HttpContext) {
-        return await Produto.findOrFail(params.id)
+        return await Produto.query()
+            .where('id', params.id)
+            .preload('tipo')
+            .preload('ingredientes')
+            .first()
     }
 
     // Método para criar algum Produto pelo Json
@@ -23,10 +27,10 @@ export default class ProdutosController {
         return await Produto.create(dados)
     }
 
-    async update({params, request}: HttpContext){
+    async update({ params, request }: HttpContext) {
         const produto = await Produto.findOrFail(params.id)
         const dados = request.only(['nome', 'preco', 'tamanho', 'tipoId'])
-        
+
         produto.merge(dados)
         return await produto.save()
     }
