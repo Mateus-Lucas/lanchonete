@@ -14,7 +14,10 @@ export default class IngredientesController {
 
     // Requisição por id passado por rota(parãmetros)
     async show({ params }: HttpContext) {
-        return await Ingrediente.findOrFail(params.id)
+        return await Ingrediente.query()
+            .where('id', params.id)
+            .preload('produtos')
+            .first()
     }
 
     // Método para criar algum Ingrediente pelo Json

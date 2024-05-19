@@ -14,7 +14,11 @@ export default class FuncionariosController {
 
     // Requisição por id passado por rota(parãmetros)
     async show({ params }: HttpContext) {
-        return await Funcionario.findOrFail(params.id)
+        return await Funcionario.query()
+            .where('id', params.id)
+            .preload('cargo')
+            .preload('comandas')
+            .first()
     }
 
     // Método para criar algum Funcionario pelo Json
@@ -23,10 +27,10 @@ export default class FuncionariosController {
         return await Funcionario.create(dados)
     }
 
-    async update({params, request}: HttpContext){
+    async update({ params, request }: HttpContext) {
         const funcionarios = await Funcionario.findOrFail(params.id)
         const dados = request.only(['nome', 'cpf', 'endereco', 'sexo', 'telefone', 'cargoId'])
-        
+
         funcionarios.merge(dados)
         return await funcionarios.save()
     }

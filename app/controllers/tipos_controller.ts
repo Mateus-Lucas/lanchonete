@@ -14,7 +14,10 @@ export default class TiposController {
 
     // Requisição por id passado por rota(parãmetros)
     async show({ params }: HttpContext) {
-        return await Tipo.findOrFail(params.id)
+        return await Tipo.query()
+            .where('id', params.id)
+            .preload('produtos')
+            .first()
     }
 
     // Método para criar algum Tipo pelo Json

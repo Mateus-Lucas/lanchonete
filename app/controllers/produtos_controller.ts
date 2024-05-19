@@ -18,6 +18,7 @@ export default class ProdutosController {
             .where('id', params.id)
             .preload('tipo')
             .preload('ingredientes')
+            .preload('comandas')
             .first()
     }
 

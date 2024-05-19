@@ -14,7 +14,12 @@ export default class ComandasController {
 
     // Requisição por id passado por rota(parãmetros)
     async show({ params }: HttpContext) {
-        return await Comanda.findOrFail(params.id)
+        return await Comanda.query()
+        .where('id', params.id)
+        .preload('funcionario')
+        .preload('cliente')
+        .preload('produtos')
+        .first()
     }
 
     // Método para criar algum Comanda pelo Json

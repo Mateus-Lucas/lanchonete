@@ -14,7 +14,10 @@ export default class ClientesController {
 
     // Requisição por id passado por rota(parãmetros)
     async show({ params }: HttpContext) {
-        return await Cliente.findOrFail(params.id)
+        return await Cliente.query()
+        .where('id', params.id)
+        .preload('comandas')
+        .first()
     }
 
     // Método para criar algum Cliente pelo Json
